@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.models import User,auth
 from django.db import IntegrityError
+from django.contrib import messages
 # Create your views here.
 def reg(request): 
     if request.method=='POST': 
@@ -12,12 +13,12 @@ def reg(request):
             password2=request.POST['pwd2']
 
             if password1==password2:
-                
-                if User.objects.filter(username=username).exists(): 
-                    print("username already taken")
-
-                elif User.objects.filter(email=email).exists():
-                    print("email is  already registered") 
+                if User.objects.filter(email=email).exists():
+                   messages.info(request,"email is  already registered") 
+                   return redirect('/accounts/register')
+                elif User.objects.filter(username=username).exists(): 
+                    messages.info(request,"username already taken")
+                    return redirect('/accounts/register')
 
                 else:
           
@@ -26,7 +27,8 @@ def reg(request):
                         print("user created")
                         return redirect('/')
             else: 
-                print("password is not matched")
+                messages.info(request,"password is not matched")
+                return redirect('/accounts/register')
     else:
         return render(request,'register.html')
        
