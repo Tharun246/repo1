@@ -25,11 +25,31 @@ def reg(request):
                         user=User.objects.create_user(first_name=first,last_name=last,email=email,username=username,password=password1)
                         user.save();
                         print("user created")
-                        return redirect('/')
+                        return redirect('/accounts/login')
             else: 
                 messages.info(request,"password is not matched")
                 return redirect('/accounts/register')
     else:
         return render(request,'register.html')
        
+    return redirect('/')
+def log(request): 
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['pwd']
+        
+        user =auth.authenticate(request, username=username, password=password)
+        if user is not None:
+            # User is authenticated, log them in
+            auth.login(request, user)
+            # Redirect to a specific URL after successful login (e.g., home page)
+            return redirect('/')
+        else:
+            # Authentication failed, show an error message
+            messages.info(request,"invalid credentials")
+            return redirect('/accounts/login')
+    else: 
+        return render(request, 'login.html')
+def logg(request): 
+    auth.logout(request)
     return redirect('/')

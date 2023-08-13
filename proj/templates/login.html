@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<body style="background-color:thistle">
+    <center> 
+        <h2>LOGIN FORM</h2>
+        <form action="/accounts/login" method="post"> 
+            {% csrf_token %}
+          <label for="username">Username</label>
+          <input type="text" name="username"><br><br>
+          <label for="pwd">Password</label>
+          <input type="password" name="pwd"><br><br>
+          <input type="submit" value="login">
+        </form>
+    {% for i in messages %}
+      <h2>{{i}}</h2>
+    {% endfor %}
+    </center>
+</body>
+</html>
